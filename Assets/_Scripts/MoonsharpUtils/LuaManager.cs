@@ -54,7 +54,6 @@ public class LuaManager : MonoBehaviour
 
     void RegisterFunctions()
     {
-        currentScript.Globals["GetMousePos"] = (Func<Vector3>) GetMousePos;
         currentScript.Globals["Require"] = (Func<string, string, int>) Require;
     }
 
@@ -85,18 +84,11 @@ public class LuaManager : MonoBehaviour
     int Require(string name, string nameSpace)
     {
         Type type = Type.GetType(nameSpace + "." + name + ", " + nameSpace);
+        print(type);
         UserData.RegisterType(type);
         currentScript.Globals[name] = UserData.Create(type);
 
         return 0;
-    }
-
-    Vector3 GetMousePos()
-    {
-        Vector3 pos = Input.mousePosition;
-        pos = Camera.main.ScreenToWorldPoint(pos);
-        pos.z = 0;
-        return pos;
     }
     #endregion
 }

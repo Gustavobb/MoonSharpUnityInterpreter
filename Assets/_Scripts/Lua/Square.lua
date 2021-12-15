@@ -1,9 +1,9 @@
 function Setup()
-    Require("GameObject", "UnityEngine")
-    Require("Transform", "UnityEngine")
-    Require("Vector3", "UnityEngine")
-    Require("Input", "UnityEngine")
-    return;
+    Require("GameObject", "UnityEngine");
+    Require("Transform", "UnityEngine");
+    Require("Vector3", "UnityEngine");
+    Require("Camera", "UnityEngine");
+    Require("Input", "UnityEngine");
 end
 
 function Start()
@@ -11,5 +11,11 @@ function Start()
 end
 
 function Update()
-    transform.position = GetMousePos();
+    transform.position = MousePos();
+end
+
+function MousePos()
+    vector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    vector.z = 0;
+    return vector;
 end
