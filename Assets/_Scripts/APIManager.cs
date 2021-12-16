@@ -17,4 +17,15 @@ public class APIManager
         else
             onSuccess(www.downloadHandler.text);
     }
+
+    public static IEnumerator Post(string url, WWWForm body, OnSuccess onSuccess)
+    {
+        UnityWebRequest www = UnityWebRequest.Post(url, body);
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+            Debug.Log(www.error);
+        else
+            onSuccess(www.downloadHandler.text);
+    }
 }

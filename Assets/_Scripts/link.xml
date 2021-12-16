@@ -12,7 +12,7 @@
     <type fullname="UnityEngine.Camera" preserve="all"/>
     <type fullname="UnityEngine.Input" preserve="all"/>
     <type fullname="UnityEngine.Ray" preserve="all"/>
-    
+
   </assembly>
 
 </linker>

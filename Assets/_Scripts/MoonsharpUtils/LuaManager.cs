@@ -34,13 +34,13 @@ public class LuaManager : MonoBehaviour
     #region Core Functions
     void GetCode()
     {
-        string scriptCode = "None";
-
         if (useApi)
         {  
             StartCoroutine(APIManager.Get(apiPath, SetupApi));
             return;
         } 
+
+        string scriptCode = "None";
 
         for (int i = 0; i < scripts.Count; i++)
         {
@@ -55,6 +55,7 @@ public class LuaManager : MonoBehaviour
     {
         currentScript.Globals["Require"] = (Func<string, string, int>) Require;
         currentScript.Globals["Print"] = (Func<object, int>) Print;
+        currentScript.Globals["Post"] = (Func<string, Dictionary<string, string>, string, int>) Post;
     }
 
     Script SetupScript(string scriptText)
@@ -83,8 +84,8 @@ public class LuaManager : MonoBehaviour
     #region Utils Functions
     void Setup(string scriptCode)
     {
-        Perform("Setup");
         gameManager.SetCodeString(scriptCode);
+        Perform("Setup");
         Perform("Start");
         canRun = true;
     }
@@ -109,6 +110,23 @@ public class LuaManager : MonoBehaviour
     int Print(object text)
     {
         Debug.Log(text);
+        return 0;
+    }
+
+    int Post(string url, Dictionary<string, string> data, string callback)
+    {
+        WWWForm form = new WWWForm();
+        
+        foreach (KeyValuePair<string, string> entry in data)
+            form.AddField(entry.Key, entry.Value);
+
+        Script script = new Script();
+        script = currentScript;
+        
+        StartCoroutine(APIManager.Post(url, form, (response) => {
+            script.Call(script.Globals[callback], response);
+        }));
+
         return 0;
     }
     #endregion
