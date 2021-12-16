@@ -4,6 +4,7 @@ using UnityEngine;
 using MoonSharp.Interpreter;
 using System.IO;
 using System;
+using Cysharp.Threading.Tasks;
 
 public class LuaManager : MonoBehaviour
 {
@@ -11,33 +12,32 @@ public class LuaManager : MonoBehaviour
     [SerializeField] bool useApi = false;
     [SerializeField] string apiPath;
     [SerializeField] string scriptsPath;
+    [SerializeField] GameManager gameManager;
     [SerializeField] List<string> scripts = new List<string>();
     List<Script> scriptsList = new List<Script>();
     delegate object DefineUserData();
     Script currentScript;
+    bool canRun = false;
     #endregion
 
     #region Unity Functions
-    void Awake()
+    async void Start()
     {
-        Setup();
-    }
-
-    void Start()
-    {
+        await Setup();
         Perform("Start");
+        canRun = true;
     }
 
     void Update()
     {
-        Perform("Update");
+        if (canRun) Perform("Update");
     }
     #endregion
 
     #region MoonSharp Functions
-    async void Setup()
+    async UniTask<int> Setup()
     {
-        string scriptCode;
+        string scriptCode = "None";
 
         if (useApi)
         {  
@@ -52,6 +52,8 @@ public class LuaManager : MonoBehaviour
         }
 
         Perform("Setup");
+        gameManager.SetCodeString(scriptCode);
+        return 0;
     }
 
     void RegisterFunctions()
