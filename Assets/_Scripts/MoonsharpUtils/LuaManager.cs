@@ -4,7 +4,6 @@ using UnityEngine;
 using MoonSharp.Interpreter;
 using System.IO;
 using System;
-using Cysharp.Threading.Tasks;
 
 public class LuaManager : MonoBehaviour
 {
@@ -21,11 +20,9 @@ public class LuaManager : MonoBehaviour
     #endregion
 
     #region Unity Functions
-    async void Start()
+    void Start()
     {
-        await Setup();
-        Perform("Start");
-        canRun = true;
+        GetCode();
     }
 
     void Update()
@@ -34,26 +31,24 @@ public class LuaManager : MonoBehaviour
     }
     #endregion
 
-    #region MoonSharp Functions
-    async UniTask<int> Setup()
+    #region Core Functions
+    void GetCode()
     {
         string scriptCode = "None";
 
         if (useApi)
         {  
-            scriptCode = await APIManager.GetLuaCode(apiPath);
-            scriptsList.Add(SetupScript(scriptCode));
+            StartCoroutine(APIManager.Get(apiPath, SetupApi));
+            return;
         } 
 
-        else for (int i = 0; i < scripts.Count; i++)
+        for (int i = 0; i < scripts.Count; i++)
         {
             scriptCode = FileManager.ReadTextFile(scriptsPath + scripts[i] + ".lua");
             scriptsList.Add(SetupScript(scriptCode));
         }
 
-        Perform("Setup");
-        gameManager.SetCodeString(scriptCode);
-        return 0;
+        Setup(scriptCode);
     }
 
     void RegisterFunctions()
@@ -86,6 +81,22 @@ public class LuaManager : MonoBehaviour
     #endregion
 
     #region Utils Functions
+    void Setup(string scriptCode)
+    {
+        Perform("Setup");
+        gameManager.SetCodeString(scriptCode);
+        Perform("Start");
+        canRun = true;
+    }
+
+    void SetupApi(string scriptCode)
+    {
+        scriptsList.Add(SetupScript(scriptCode));
+        Setup(scriptCode);
+    }
+    #endregion
+
+    #region MoonSharp Functions
     int Require(string name, string nameSpace)
     {
         Type type = Type.GetType(nameSpace + "." + name + ", " + nameSpace);
