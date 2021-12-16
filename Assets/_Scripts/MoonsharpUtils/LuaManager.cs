@@ -30,14 +30,6 @@ public class LuaManager : MonoBehaviour
     {
         Perform("Update");
     }
-
-    void FixedUpdate()
-    {
-    }
-
-    void LateUpdate()
-    {
-    }
     #endregion
 
     #region MoonSharp Functions
@@ -84,11 +76,15 @@ public class LuaManager : MonoBehaviour
     int Require(string name, string nameSpace)
     {
         Type type = Type.GetType(nameSpace + "." + name + ", " + nameSpace);
-        print(type);
         UserData.RegisterType(type);
         currentScript.Globals[name] = UserData.Create(type);
 
         return 0;
     }
+
+    // void GetComponent(string name, GameObject gameObject, string )
+    // {
+
+    // }
     #endregion
 }
