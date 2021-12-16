@@ -8,6 +8,8 @@ using System;
 public class LuaManager : MonoBehaviour
 {
     #region Variables
+    [SerializeField] bool useApi = false;
+    [SerializeField] string apiPath;
     [SerializeField] string scriptsPath;
     [SerializeField] List<string> scripts = new List<string>();
     List<Script> scriptsList = new List<Script>();
@@ -33,11 +35,19 @@ public class LuaManager : MonoBehaviour
     #endregion
 
     #region MoonSharp Functions
-    void Setup()
+    async void Setup()
     {
-        for (int i = 0; i < scripts.Count; i++)
+        string scriptCode;
+
+        if (useApi)
+        {  
+            scriptCode = await APIManager.GetLuaCode(apiPath);
+            scriptsList.Add(SetupScript(scriptCode));
+        } 
+
+        else for (int i = 0; i < scripts.Count; i++)
         {
-            string scriptCode = FileManager.ReadTextFile(scriptsPath + scripts[i] + ".lua");
+            scriptCode = FileManager.ReadTextFile(scriptsPath + scripts[i] + ".lua");
             scriptsList.Add(SetupScript(scriptCode));
         }
 
@@ -47,6 +57,7 @@ public class LuaManager : MonoBehaviour
     void RegisterFunctions()
     {
         currentScript.Globals["Require"] = (Func<string, string, int>) Require;
+        currentScript.Globals["Print"] = (Func<object, int>) Print;
     }
 
     Script SetupScript(string scriptText)
@@ -82,9 +93,10 @@ public class LuaManager : MonoBehaviour
         return 0;
     }
 
-    // void GetComponent(string name, GameObject gameObject, string )
-    // {
-
-    // }
+    int Print(object text)
+    {
+        Debug.Log(text);
+        return 0;
+    }
     #endregion
 }
