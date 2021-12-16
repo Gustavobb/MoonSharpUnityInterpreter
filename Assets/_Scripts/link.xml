@@ -1,0 +1,18 @@
+<linker>
+
+  <assembly fullname="UnityEngine">
+
+    <type fullname="UnityEngine.RaycastHit2D" preserve="all"/>
+    <type fullname="UnityEngine.Rigidbody2D" preserve="all"/>
+    <type fullname="UnityEngine.GameObject" preserve="all"/>
+    <type fullname="UnityEngine.Transform" preserve="all"/>
+    <type fullname="UnityEngine.Physics2D" preserve="all"/>
+    <type fullname="UnityEngine.Vector3" preserve="all"/>
+    <type fullname="UnityEngine.Vector2" preserve="all"/>
+    <type fullname="UnityEngine.Camera" preserve="all"/>
+    <type fullname="UnityEngine.Input" preserve="all"/>
+    <type fullname="UnityEngine.Ray" preserve="all"/>
+    
+  </assembly>
+
+</linker>
