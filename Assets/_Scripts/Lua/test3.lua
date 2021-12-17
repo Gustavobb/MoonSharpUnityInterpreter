@@ -5,7 +5,7 @@ function Setup()
 end
 
 function Start()
-    transform = GameObject.FindWithTag("Player").transform;
+    transform = GameObject.FindWithTag("Enemy").transform;
 end
 
 function Update()

@@ -11,10 +11,10 @@ public class LuaManager : MonoBehaviour
     [SerializeField] bool useApi = false;
     [SerializeField] string apiPath;
     [SerializeField] string scriptsPath;
-    [SerializeField] GameManager gameManager;
     [SerializeField] List<string> scripts = new List<string>();
     List<Script> scriptsList = new List<Script>();
-    delegate object DefineUserData();
+    public delegate void GotCode(string code);
+    public static GotCode gotCode;
     Script currentScript;
     bool canRun = false;
     #endregion
@@ -35,10 +35,7 @@ public class LuaManager : MonoBehaviour
     void GetCode()
     {
         if (useApi)
-        {  
             StartCoroutine(APIManager.Get(apiPath, SetupApi));
-            return;
-        } 
 
         string scriptCode = "None";
 
@@ -84,7 +81,7 @@ public class LuaManager : MonoBehaviour
     #region Utils Functions
     void Setup(string scriptCode)
     {
-        gameManager.SetCodeString(scriptCode);
+        gotCode(scriptCode);
         Perform("Setup");
         Perform("Start");
         canRun = true;

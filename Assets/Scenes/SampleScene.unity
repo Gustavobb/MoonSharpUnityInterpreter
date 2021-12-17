@@ -614,7 +614,7 @@ GameObject:
   - component: {fileID: 961584625}
   m_Layer: 0
   m_Name: Square (1)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -627,8 +627,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961584623}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.46, y: -2.17, z: 2.8959298}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.45, y: -2.12, z: 2.8959298}
+  m_LocalScale: {x: 1, y: 0.5107, z: 1}
   m_Children: []
   m_Father: {fileID: 410037678}
   m_RootOrder: 0
@@ -955,9 +955,7 @@ MonoBehaviour:
   useApi: 1
   apiPath: https://test-lua-api.herokuapp.com/v1/code
   scriptsPath: Assets/_Scripts/Lua/
-  gameManager: {fileID: 1150591295}
-  scripts:
-  - test3
+  scripts: []
 --- !u!4 &1150591294
 Transform:
   m_ObjectHideFlags: 0

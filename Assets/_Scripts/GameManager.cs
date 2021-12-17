@@ -9,6 +9,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] Text debugText;
     [SerializeField] Toggle toggle;
 
+    void Awake()
+    {
+        LuaManager.gotCode += SetCodeString;
+    }
+
     public void RealoadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
